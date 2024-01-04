@@ -53,7 +53,7 @@ public class Maingui extends JFrame {
 
         // 添加组件
         // info
-        JLabel message_1 = new JLabel("Version: 4.2");
+        JLabel message_1 = new JLabel("Version: 1.0");
         message_1.setBounds(10, 355, 150, 15);
         message_1.setFont(font_2);
         message_1.setForeground(Color.BLACK);
