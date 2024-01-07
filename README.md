@@ -1,6 +1,6 @@
 # Custom Configuration System    
 ##### CPS 2232 Final Project
-
+ 
 ## Introduction
 This program is a program for importing and exporting "user computer accessories configuration list", the program allows users to fill in the configuration information in the program, the export file format for the configuration list.xlsx, while supporting the format file for the configuration list file import into the program, easy to modify the configuration information. The program is equipped with a simple file that records the information of accessories, allowing users to legally add, delete, modify, and query operations.
 
