@@ -1,7 +1,5 @@
 package data;
 
-import lang.LanguageManager;
-
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +13,6 @@ public class DeleteData {
     }
 
     public void delete(JTextArea log_textarea, String hardware, String item) {
-        LanguageManager lang = new LanguageManager();
         File filePath = new File("src/resource/data/database/" + hardware + ".txt");
 
         // 检查文件是否存在
@@ -54,10 +51,10 @@ public class DeleteData {
                     // 写入新数据到文件
                     Files.write(Paths.get(filePath.getAbsolutePath()), newData);
                     Time nowTime = new Time();
-                    log_textarea.append("[" + nowTime.getTimePoint() + "] " + lang.getLang("Tip_Delete") + "\n");
+                    log_textarea.append("[" + nowTime.getTimePoint() + "] " + "The data has been deleted successfully.\n");
                 } else {
                     Time nowTime = new Time();
-                    log_textarea.append("[" + nowTime.getTimePoint() + "] " + lang.getLang("Error_Delete") + "\n");
+                    log_textarea.append("[" + nowTime.getTimePoint() + "] " + "Data not found.\n");
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);

@@ -87,7 +87,7 @@ public class AutoCompleteCellEditor extends DefaultCellEditor {
                                 for (int row = 0; row < rowCount; row++) {
                                     Object cellValue = tableModel_1.getValueAt(row, 1);
                                     if (cellValue != null && cellValue.toString().equals(selectedValue)) {
-                                        tableModel_1.setValueAt(dataOperation.getValue(table_1, row, 1), row, 3);
+                                        performDataOperation(row, tableModel_1, table_1);
                                         table_2.setValueAt(calculateTotal(table_1), 0, 1);
                                         break;
                                     }
@@ -95,23 +95,31 @@ public class AutoCompleteCellEditor extends DefaultCellEditor {
                                 textField.removeFocusListener(this); // 移除焦点监听器，确保只执行一次
                             }
                         });
+
                         textField.setText(selectedValue);
                         textField.requestFocusInWindow();
                     });
+
                     popupMenu.add(item);
                 }
             }
         }
 
         // 设置弹出菜单的大小
-        int width = Math.max(375, textField.getWidth());
-        int itemHeight = 30;
+        int width = Math.max(450, textField.getWidth());
+        int itemHeight = 10;
         int maxHeight = 0;
         int popupHeight = Math.max(maxHeight, suggestions.size() * itemHeight);
         popupMenu.setPreferredSize(new Dimension(width, popupHeight));
 
         popupMenu.revalidate();
         popupMenu.repaint();
+    }
+
+
+    // 执行数据操作
+    private void performDataOperation(int row, DefaultTableModel tableModel_1, JTable table_1) {
+        tableModel_1.setValueAt(dataOperation.getValue(table_1, row), row, 2);
     }
 
     // 自动设置弹出菜单

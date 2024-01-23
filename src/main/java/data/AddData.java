@@ -1,7 +1,5 @@
 package data;
 
-import lang.LanguageManager;
-
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +13,6 @@ public class AddData {
     }
 
     public void add(JTextArea log_textarea, String hardware, String item, String value) {
-        LanguageManager lang = new LanguageManager();
         File filePath = new File("src/resource/data/database/" + hardware + ".txt");
         String addData = item + ";" + Double.parseDouble(value);
         // 检查文件是否存在
@@ -35,7 +32,7 @@ public class AddData {
                 }
                 if (alreadyExists) {
                     Time nowTime = new Time();
-                    log_textarea.append("[" + nowTime.getTimePoint() + "] " + lang.getLang("Error_Add") + "\n");
+                    log_textarea.append("[" + nowTime.getTimePoint() + "] " + "Data already exists.\n");
                 } else {
                     // 添加新内容
                     existingData.add(addData);
@@ -43,7 +40,7 @@ public class AddData {
                     Files.write(Paths.get(String.valueOf(filePath)), existingData, StandardOpenOption.WRITE);
 
                     Time nowTime = new Time();
-                    log_textarea.append("[" + nowTime.getTimePoint() + "] " + lang.getLang("Tip_Add") + "\n");
+                    log_textarea.append("[" + nowTime.getTimePoint() + "] " + "Data has been added successfully.\n");
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);

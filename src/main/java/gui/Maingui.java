@@ -1,24 +1,21 @@
 package gui;
 
-import lang.LanguageManager;
-import unit.Version;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 public class Maingui extends JFrame {
+    public static void main(String[] args) throws Exception {
+        maingui();
+    }
     @SuppressWarnings("SpellCheckingInspection")
     public static void maingui() throws Exception {
-        LanguageManager lang = new LanguageManager();
-        Version version = new Version();
         // 设置字体
         Font font_1 = new Font("微软雅黑", Font.BOLD, 20);
         Font font_2 = new Font("微软雅黑", Font.BOLD, 10);
 
         // 程序标题
-        JFrame maingui = new JFrame(lang.getLang("Custom_Configuration_System"));
+        JFrame maingui = new JFrame("Custom Configuration System");
         // 窗口大小
         maingui.setPreferredSize(new Dimension(668, 434));
         // 部件自适应大小
@@ -56,17 +53,17 @@ public class Maingui extends JFrame {
 
         // 添加组件
         // info
-        JLabel message_1 = new JLabel(lang.getLang("Version") + ": " + version.getVersion());
+        JLabel message_1 = new JLabel("Version: 4.2");
         message_1.setBounds(10, 355, 150, 15);
         message_1.setFont(font_2);
         message_1.setForeground(Color.BLACK);
-        JLabel message_2 = new JLabel(lang.getLang("Authors") + ": " + "Sitao Zheng");
+        JLabel message_2 = new JLabel("Authors: Sitao Zheng & Yiming Yang & Jiapeng Wu");
         message_2.setBounds(10, 370, 300, 15);
         message_2.setFont(font_2);
         message_2.setForeground(Color.BLACK);
 
         // 启动按键
-        JButton Launch_button = new JButton(lang.getLang("Launch"));
+        JButton Launch_button = new JButton("Launch");
         Launch_button.setBounds((width / 2) - 75, (height / 2) - 80, 150, 50);
         Launch_button.setForeground(Color.RED);
         Launch_button.setFont(font_1);

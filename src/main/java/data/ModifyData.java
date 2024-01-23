@@ -1,7 +1,5 @@
 package data;
 
-import lang.LanguageManager;
-
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +13,6 @@ public class ModifyData {
     }
 
     public void modify(JTextArea log_textarea, String hardware, String item, String value, String newItem, String newValue) {
-        LanguageManager lang = new LanguageManager();
         File filePath = new File("src/resource/data/database/" + hardware + ".txt");
         if (filePath.exists()) {
             try {
@@ -45,11 +42,11 @@ public class ModifyData {
 
                 if (itemAlreadyExists && newItemAlreadyExists) {
                     Time nowTime = new Time();
-                    log_textarea.append("[" + nowTime.getTimePoint() + "] " + lang.getLang("Error_Same_Change") + "\n");
+                    log_textarea.append("[" + nowTime.getTimePoint() + "] " + "The data is the same before and after the change.\n");
                 }
                 else if ((!itemAlreadyExists && newItemAlreadyExists) || (!itemAlreadyExists && !newItemAlreadyExists)) {
                     Time nowTime = new Time();
-                    log_textarea.append("[" + nowTime.getTimePoint() + "] " + lang.getLang("Error_No_Data_2") + "\n");
+                    log_textarea.append("[" + nowTime.getTimePoint() + "] " + "The data was not found.\n");
                 }
                 else if (itemAlreadyExists && !newItemAlreadyExists) {
                     for (String line : existingData) {
@@ -70,7 +67,7 @@ public class ModifyData {
                     // 写入新数据到文件
                     Files.write(Paths.get(filePath.getAbsolutePath()), newData);
                     Time nowTime = new Time();
-                    log_textarea.append("[" + nowTime.getTimePoint() + "] " + lang.getLang("Tip_Modified") + "\n");
+                    log_textarea.append("[" + nowTime.getTimePoint() + "] " + "The data has been modified successfully.\n");
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);

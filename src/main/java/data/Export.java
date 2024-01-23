@@ -1,10 +1,8 @@
 package data;
 
-import lang.LanguageManager;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import unit.Placeholder;
 
 import javax.swing.*;
 import java.io.FileOutputStream;
@@ -16,120 +14,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Export {
-    private static void dataToExcel(Map<String, Map<String, Map<Integer, Double>>> data, String filePath, CellStyle headerStyle, CellStyle hardwareStyle, CellStyle dataStyle, CellStyle totalStyle, CellStyle psStyle, Sheet sheet, String total, String ps, JTable table_2) {
-        try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
-            LanguageManager lang = new LanguageManager();
-            // 创建表头
-            Row headerRow = sheet.getRow(0);
-            for (int i = 0; i < 4; i++) {
-                Cell cell = headerRow.getCell(i);
-                cell.setCellStyle(headerStyle);
-            }
-
-            int rowNum = 1;
-            for (Map.Entry<String, Map<String, Map<Integer, Double>>> entry : data.entrySet()) {
-                Row row = sheet.createRow(rowNum++);
-                int colNum = 0;
-
-                // 在第一列添加类型
-                Cell typeCell = row.createCell(colNum++);
-                typeCell.setCellValue(entry.getKey());
-                typeCell.setCellStyle(hardwareStyle);
-
-                // 在后续列添加产品数据
-                for (Map.Entry<String, Map<Integer, Double>> productEntry : entry.getValue().entrySet()) {
-                    for (Map.Entry<Integer, Double> valueEntry : productEntry.getValue().entrySet()) {
-                        Cell cell = row.createCell(colNum++);
-                        cell.setCellValue(productEntry.getKey());
-                        cell.setCellStyle(dataStyle);
-
-                        cell = row.createCell(colNum++);
-                        cell.setCellValue(valueEntry.getKey());
-                        cell.setCellStyle(dataStyle);
-
-                        cell = row.createCell(colNum++);
-                        cell.setCellValue(valueEntry.getValue());
-                        cell.setCellStyle(dataStyle);
-                    }
-                }
-            }
-
-            // 调整列宽
-            for (int i = 0; i < sheet.getRow(0).getPhysicalNumberOfCells(); i++) {
-                sheet.autoSizeColumn(i);
-                // 设置“数量”列的最小宽度为4
-                if (i == 2 && sheet.getColumnWidth(i) < 5 * 256) {
-                    sheet.setColumnWidth(i, 5 * 256);
-                }
-            }
-
-            // 合并total单元格 (A10:C10)
-            CellRangeAddress mergedRegion1 = new CellRangeAddress(9, 9, 0, 2);
-            sheet.addMergedRegion(mergedRegion1);
-            Row mergedRow1 = sheet.getRow(9);
-            if (mergedRow1 == null) {
-                mergedRow1 = sheet.createRow(9);
-            }
-            Cell mergedCell1 = mergedRow1.createCell(0);
-            mergedCell1.setCellValue((String) table_2.getValueAt(0, 0));
-            mergedCell1.setCellStyle(totalStyle);
-
-            // 对合并区域内的每个单元格应用边框
-            for (int i = mergedRegion1.getFirstRow(); i <= mergedRegion1.getLastRow(); i++) {
-                Row row = sheet.getRow(i);
-                if (row == null) {
-                    row = sheet.createRow(i);
-                }
-                for (int j = mergedRegion1.getFirstColumn(); j <= mergedRegion1.getLastColumn(); j++) {
-                    Cell cell = row.getCell(j);
-                    if (cell == null) {
-                        cell = row.createCell(j);
-                    }
-                    cell.setCellStyle(totalStyle);
-                }
-            }
-
-            // 获取合并后的单元格的右边一格（假设在合并后的单元格的右边添加数据）
-            Cell nextCell1 = mergedRow1.createCell(mergedRegion1.getLastColumn() + 1);
-            nextCell1.setCellValue(Double.parseDouble(total));
-            nextCell1.setCellStyle(dataStyle);
-
-            // 合并ps单元格 (A11:D12)
-            CellRangeAddress mergedRegion2 = new CellRangeAddress(10, 11, 0, 3);
-            sheet.addMergedRegion(mergedRegion2);
-            Row mergedRow2 = sheet.getRow(10);
-            if (mergedRow2 == null) {
-                mergedRow2 = sheet.createRow(10);
-            }
-            Cell mergedCell2 = mergedRow2.createCell(0);
-            mergedCell2.setCellValue(ps);
-            mergedCell2.setCellStyle(psStyle);
-
-            // 对合并区域内的每个单元格应用边框
-            for (int i = mergedRegion2.getFirstRow(); i <= mergedRegion2.getLastRow(); i++) {
-                Row row = sheet.getRow(i);
-                if (row == null) {
-                    row = sheet.createRow(i);
-                }
-                for (int j = mergedRegion2.getFirstColumn(); j <= mergedRegion2.getLastColumn(); j++) {
-                    Cell cell = row.getCell(j);
-                    if (cell == null) {
-                        cell = row.createCell(j);
-                    }
-                    cell.setCellStyle(psStyle);
-                }
-            }
-
-            // 写入文件
-            sheet.getWorkbook().write(fileOut);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void Export(JTextArea log_textarea, JTable table_1, String file, String total, String ps, JTable table_2) {
-        LanguageManager lang = new LanguageManager();
+    public void Export(JTextArea log_textarea, JTable table_1, String file, String CPU, String MB, String RAM, String HDD, String GPU, String PSU, String HSF, String Case, String total, String ps) {
         String name = file + ".xlsx";
+        DataOperation dataOperation = new DataOperation();
 
         // 指定文件夹路径
         Path folderPath = Paths.get("src/resource/data/file/");
@@ -197,53 +84,157 @@ public class Export {
 
                 // 创建表头
                 Row headerRow = sheet.createRow(0);
-                String[] columns = {lang.getLang("Hardware"), lang.getLang("Item"), lang.getLang("Num"), lang.getLang("Value")};
-                for (int i = 0; i < 4; i++) {
+                String[] columns = {"Hardware", "Item", "Value"};
+                for (int i = 0; i < 3; i++) {
                     Cell cell = headerRow.createCell(i);
                     cell.setCellValue(columns[i]);
                     cell.setCellStyle(headerStyle);
                 }
 
                 // 添加数据
-                Map<String, Map<String, Map<Integer, Double>>> dataMap = new HashMap<>();
-
-                // 获取表格行数
-                int rowCount = table_1.getRowCount();
-                // 循环处理每一行数据
-                for (int i = 0; i < rowCount; i++) {
-                    // 获取Hardware、Item、Num、Value的值
-                    String hardware = (String) table_1.getValueAt(i, 0);
-                    String item = (String) table_1.getValueAt(i, 1);
-                    Integer num = Integer.valueOf(table_1.getValueAt(i, 2).toString());
-                    Double value = Double.valueOf(table_1.getValueAt(i, 3).toString());
-
-                    // 如果dataMap中已经存在该Hardware，则获取其对应的Map
-                    Map<String, Map<Integer, Double>> hardwareMap = dataMap.getOrDefault(hardware, new HashMap<>());
-
-                    // 如果hardwareMap中已经存在该Item，则获取其对应的Map
-                    Map<Integer, Double> itemMap = hardwareMap.getOrDefault(item, new HashMap<>());
-
-                    // 将Num和Value存入itemMap
-                    itemMap.put(num, value);
-
-                    // 将itemMap存入hardwareMap
-                    hardwareMap.put(item, itemMap);
-
-                    // 将hardwareMap存入dataMap
-                    dataMap.put(hardware, hardwareMap);
-                }
-
+                Map<String, Map<String, Double>> dataMap = new HashMap<>();
+                // CPU
+                Map<String, Double> cpuData = new HashMap<>();
+                cpuData.put(CPU, Double.parseDouble(dataOperation.getValue(table_1, 0)));
+                dataMap.put("CPU", cpuData);
+                // MB
+                Map<String, Double> mbData = new HashMap<>();
+                mbData.put(MB, Double.parseDouble(dataOperation.getValue(table_1, 1)));
+                dataMap.put("MB", mbData);
+                // RAM
+                Map<String, Double> ramData = new HashMap<>();
+                ramData.put(RAM, Double.parseDouble(dataOperation.getValue(table_1, 2)));
+                dataMap.put("RAM", ramData);
+                // HDD
+                Map<String, Double> hddData = new HashMap<>();
+                hddData.put(HDD, Double.parseDouble(dataOperation.getValue(table_1, 3)));
+                dataMap.put("HDD", hddData);
+                // GPU
+                Map<String, Double> gpuData = new HashMap<>();
+                gpuData.put(GPU, Double.parseDouble(dataOperation.getValue(table_1, 4)));
+                dataMap.put("GPU", gpuData);
+                // PSU
+                Map<String, Double> psuData = new HashMap<>();
+                psuData.put(PSU, Double.parseDouble(dataOperation.getValue(table_1, 5)));
+                dataMap.put("PSU", psuData);
+                // HSF
+                Map<String, Double> hsfData = new HashMap<>();
+                hsfData.put(HSF, Double.parseDouble(dataOperation.getValue(table_1, 6)));
+                dataMap.put("HSF", hsfData);
+                // Case
+                Map<String, Double> caseData = new HashMap<>();
+                caseData.put(Case, Double.parseDouble(dataOperation.getValue(table_1, 7)));
+                dataMap.put("Case", caseData);
 
                 // 将数据写入表格
-                dataToExcel(dataMap, folderPath.resolve(name).toString(), headerStyle, hardwareStyle, dataStyle, totalStyle, psStyle, sheet, total, ps, table_2);
+                dataToExcel(dataMap, folderPath.resolve(name).toString(), headerStyle, hardwareStyle, dataStyle, totalStyle, psStyle, sheet, total, ps);
 
                 Time nowTime = new Time();
-                String log = lang.getLang("Tip_Exported");
-                log_textarea.append("[" + nowTime.getTimePoint() + "] " + Placeholder.replaceVariables(log, "file_name", name) + "\n");
+                log_textarea.append("[" + nowTime.getTimePoint() + "] " + name + " is successfully exported.\n");
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void dataToExcel(Map<String, Map<String, Double>> data, String filePath, CellStyle headerStyle, CellStyle hardwareStyle, CellStyle dataStyle, CellStyle totalStyle, CellStyle psStyle, Sheet sheet, String total, String ps) {
+        try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
+            // 创建表头
+            Row headerRow = sheet.getRow(0);
+            for (int i = 0; i < 3; i++) {
+                Cell cell = headerRow.getCell(i);
+                cell.setCellStyle(headerStyle);
+            }
+
+            int rowNum = 1;
+            for (Map.Entry<String, Map<String, Double>> entry : data.entrySet()) {
+                Row row = sheet.createRow(rowNum++);
+                int colNum = 0;
+
+                // 在第一列添加类型
+                Cell typeCell = row.createCell(colNum++);
+                typeCell.setCellValue(entry.getKey());
+                typeCell.setCellStyle(hardwareStyle);
+
+                // 在后续列添加产品数据
+                for (Map.Entry<String, Double> productEntry : entry.getValue().entrySet()) {
+                    Cell cell = row.createCell(colNum++);
+                    cell.setCellValue(productEntry.getKey());
+                    cell.setCellStyle(dataStyle);
+
+                    cell = row.createCell(colNum++);
+                    cell.setCellValue(productEntry.getValue());
+                    cell.setCellStyle(dataStyle);
+                }
+            }
+
+            // 调整列宽
+            for (int i = 0; i < sheet.getRow(0).getPhysicalNumberOfCells(); i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            // 合并total单元格 (A10:B10)
+            CellRangeAddress mergedRegion1 = new CellRangeAddress(9, 9, 0, 1);
+            sheet.addMergedRegion(mergedRegion1);
+            Row mergedRow1 = sheet.getRow(9);
+            if (mergedRow1 == null) {
+                mergedRow1 = sheet.createRow(9);
+            }
+            Cell mergedCell1 = mergedRow1.createCell(0);
+            mergedCell1.setCellValue("Total");
+            mergedCell1.setCellStyle(totalStyle);
+
+            // 对合并区域内的每个单元格应用边框
+            for (int i = mergedRegion1.getFirstRow(); i <= mergedRegion1.getLastRow(); i++) {
+                Row row = sheet.getRow(i);
+                if (row == null) {
+                    row = sheet.createRow(i);
+                }
+                for (int j = mergedRegion1.getFirstColumn(); j <= mergedRegion1.getLastColumn(); j++) {
+                    Cell cell = row.getCell(j);
+                    if (cell == null) {
+                        cell = row.createCell(j);
+                    }
+                    cell.setCellStyle(totalStyle);
+                }
+            }
+
+            // 获取合并后的单元格的右边一格（假设在合并后的单元格的右边添加数据）
+            Cell nextCell1 = mergedRow1.createCell(mergedRegion1.getLastColumn() + 1);
+            nextCell1.setCellValue(Double.parseDouble(total));
+            nextCell1.setCellStyle(dataStyle);
+
+            // 合并ps单元格 (A11:C12)
+            CellRangeAddress mergedRegion2 = new CellRangeAddress(10, 11, 0, 2);
+            sheet.addMergedRegion(mergedRegion2);
+            Row mergedRow2 = sheet.getRow(10);
+            if (mergedRow2 == null) {
+                mergedRow2 = sheet.createRow(10);
+            }
+            Cell mergedCell2 = mergedRow2.createCell(0);
+            mergedCell2.setCellValue(ps);
+            mergedCell2.setCellStyle(psStyle);
+
+            // 对合并区域内的每个单元格应用边框
+            for (int i = mergedRegion2.getFirstRow(); i <= mergedRegion2.getLastRow(); i++) {
+                Row row = sheet.getRow(i);
+                if (row == null) {
+                    row = sheet.createRow(i);
+                }
+                for (int j = mergedRegion2.getFirstColumn(); j <= mergedRegion2.getLastColumn(); j++) {
+                    Cell cell = row.getCell(j);
+                    if (cell == null) {
+                        cell = row.createCell(j);
+                    }
+                    cell.setCellStyle(psStyle);
+                }
+            }
+
+            // 写入文件
+            sheet.getWorkbook().write(fileOut);
         } catch (IOException e) {
             e.printStackTrace();
         }

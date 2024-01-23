@@ -2,8 +2,6 @@ package gui;
 
 import data.Request;
 import data.Time;
-import lang.LanguageManager;
-import unit.Placeholder;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -18,33 +16,32 @@ import java.util.List;
 
 public class function3 {
     public static JPanel function3(Font font_1, Font font_2, Font font_3, Font font_4, Font font_5) {
-        LanguageManager lang = new LanguageManager();
-
         JPanel function3 = new JPanel();
+
         // 查询类型
-        JLabel typeQuery = new JLabel(lang.getLang("Type_Query"));
+        JLabel typeQuery = new JLabel("Type Query");
         typeQuery.setFont(font_4);
         typeQuery.setForeground(new Color(Integer.parseInt("#8B008B".substring(1), 16)));
-        typeQuery.setBounds(35, 55, 150, 30);
+        typeQuery.setBounds(35, 70, 150, 30);
         function3.add(typeQuery);
 
         // 配件勾选
-        JRadioButton hardware_Radio = new JRadioButton(lang.getLang("Hardware"));
+        JRadioButton hardware_Radio = new JRadioButton("Hardware");
         hardware_Radio.setFont(font_3);
         hardware_Radio.setForeground(Color.black);
-        hardware_Radio.setBounds(175, 60, 100, 30);
+        hardware_Radio.setBounds(175, 75, 100, 30);
         function3.add(hardware_Radio);
 
-        JRadioButton item_Radio = new JRadioButton(lang.getLang("Item"));
+        JRadioButton item_Radio = new JRadioButton("Item");
         item_Radio.setFont(font_3);
         item_Radio.setForeground(Color.black);
-        item_Radio.setBounds(285, 60, 61, 30);
+        item_Radio.setBounds(285, 75, 61, 30);
         function3.add(item_Radio);
 
-        JRadioButton value_Radio = new JRadioButton(lang.getLang("Value"));
+        JRadioButton value_Radio = new JRadioButton("Value");
         value_Radio.setFont(font_3);
         value_Radio.setForeground(Color.black);
-        value_Radio.setBounds(353, 60, 70, 30);
+        value_Radio.setBounds(353, 75, 70, 30);
         function3.add(value_Radio);
         // 创建按钮组
         ButtonGroup radioButtonGroup = new ButtonGroup();
@@ -53,13 +50,13 @@ public class function3 {
         radioButtonGroup.add(value_Radio);
 
         JTextField text = new JTextField();
-        text.setBounds(445, 60, 465, 35);
+        text.setBounds(445, 75, 465, 35);
         text.setFont(font_4);
         text.setForeground(Color.black);
         function3.add(text);
 
         // 创建表格
-        String[] columnNames = {lang.getLang("Hardware"), lang.getLang("Item"), lang.getLang("Value")};
+        String[] columnNames = {"Hardware", "Item", "Value"};
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
         JTable table = new JTable(tableModel);
         // 设置单元格居中对齐
@@ -94,7 +91,7 @@ public class function3 {
         table.setEnabled(false);
         // 滚动条
         JScrollPane scrollPane_1 = new JScrollPane(table);
-        scrollPane_1.setBounds(35, 110, 650, 357);
+        scrollPane_1.setBounds(35, 125, 650, 357);
         function3.add(scrollPane_1);
 
         // log
@@ -105,12 +102,12 @@ public class function3 {
         log_textarea.setEditable(false);
         log_textarea.setLineWrap(true);
         log_textarea.setWrapStyleWord(true);
-        textAreaScrollPane.setBounds(710, 135, 200, 245);
+        textAreaScrollPane.setBounds(710, 150, 200, 245);
         function3.add(textAreaScrollPane);
 
         // 查询按钮
-        JButton request_button = new JButton(lang.getLang("Request"));
-        request_button.setBounds(710, 410, 200, 35);
+        JButton request_button = new JButton("Request");
+        request_button.setBounds(710, 425, 200, 35);
         request_button.setFont(font_4);
         request_button.setForeground(new Color(Integer.parseInt("#32CD32".substring(1), 16)));
         request_button.setBackground(Color.white);
@@ -140,13 +137,12 @@ public class function3 {
                                 String input_text = text.getText();
                                 String logMessage = null; // 用于保存日志消息
                                 if (input_text.isEmpty()) {
-                                    log_textarea.append("[" + nowTime.getTimePoint() + "] " + lang.getLang("Tip_Enter_Info_1") + "\n");
+                                    log_textarea.append("[" + nowTime.getTimePoint() + "] " + "Please enter the info.\n");
                                 } else {
                                     Request request = new Request();
 
                                     if (request.getItem(input_text, selectedText).isEmpty()) {
-                                        String log = lang.getLang("Error_No_Data_1");
-                                        logMessage = "[" + nowTime.getTimePoint() + "] " + Placeholder.replaceVariables(log, "input_text", input_text) + "\n";
+                                        logMessage="[" + nowTime.getTimePoint() + "] " + " No data was retrieved for " + "\"" + input_text + "\"" + "\n";
                                     }
                                     else {
                                         // 遍历 dataArray 并将数据添加到表格模型中
@@ -154,8 +150,8 @@ public class function3 {
                                             tableModel.addRow(rowData.toArray());
                                         }
                                         tableModel.fireTableDataChanged();
-                                        String log = lang.getLang("Tip_Requested");
-                                        logMessage = "[" + nowTime.getTimePoint() + "] " + Placeholder.replaceVariables(log, "input_text", input_text.toUpperCase()) + "\n";
+
+                                        logMessage ="[" + nowTime.getTimePoint() + "] " + "\"" + input_text.toUpperCase() + "\"" + " has been requested.\n";
                                     }
                                 }
                                 log_textarea.append(logMessage);
@@ -175,7 +171,7 @@ public class function3 {
                 try {
                     nowTime = new Time();
                     if (!hardware_Radio.isSelected() && !item_Radio.isSelected() && !value_Radio.isSelected()) {
-                        log_textarea.append("[" + nowTime.getTimePoint() + "] " + lang.getLang("Tip_Select_Choice") + "\n");
+                        log_textarea.append("[" + nowTime.getTimePoint() + "] " + "Please select a choice.\n");
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
