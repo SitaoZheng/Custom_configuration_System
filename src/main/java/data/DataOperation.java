@@ -54,38 +54,50 @@ public class DataOperation {
         return dataArray;
     }
 
-    public String getValue(JTable table_1, int row) {
-        String data = table_1.getValueAt(row, 1).toString();
-        List<List<String>> dataArray = this.getData();
-        String value = null;
-        for (List<String> rowList : dataArray) {
-            // 检查第二列是否匹配
-            if (rowList.size() > 1 && rowList.get(1).equals(data)) {
-                // 如果匹配，获取第三列的值
-                if (rowList.size() > 2) {
-                    value = rowList.get(2);
-                    break; // 找到匹配项后可以退出循环
-                }
-            }
-        }
-        return value;
-    }
-    public static void clearValue(int row, JTable table_1) {
-        table_1.setValueAt("", row, 2);
-    }
     public static Object calculateTotal(JTable table_1) {
-        int columnIndex = 2;
+        int valueColumnIndex = 3;
+        int numColumnIndex = 2;
         double sum = 0.0;
         // 遍历二维数组的行
         for (int i = 0; i < 8; i++) {
-            Object cellValue = table_1.getValueAt(i, columnIndex);
-
-            if (cellValue != null && !cellValue.toString().isEmpty()) {
+            Object cellValue = table_1.getValueAt(i, valueColumnIndex);
+            Object cellNum = table_1.getValueAt(i, numColumnIndex);
+            if (cellValue != null && !cellValue.toString().isEmpty() && cellNum != null && !cellNum.toString().isEmpty()) {
                 // 只有在数据不为null且不为空的情况下才进行累加
-                sum += Double.parseDouble(cellValue.toString());
+                sum += Double.parseDouble(cellValue.toString()) * Double.parseDouble(cellNum.toString());
             }
         }
         return sum;
     }
 
+    public static void clearValue(int row, JTable table_1) {
+        table_1.setValueAt("", row, 2);
+    }
+
+    // 找 item 对应的 value
+    public String getValue(JTable table, int row, int column) {
+        // 获取指定行和列的数据
+        String data = table.getValueAt(row, column).toString();
+
+        // 获取整个表格的数据
+        List<List<String>> dataArray = this.getData();
+
+        // 初始化返回值
+        String value = null;
+
+        // 遍历表格数据
+        for (List<String> rowList : dataArray) {
+            // 检查当前行的长度是否大于指定列，并检查指定列的数据是否与目标数据相匹配
+            if (rowList.size() > column && rowList.get(column).equals(data)) {
+                // 如果匹配，获取指定列的值
+                if (rowList.size() > (column + 1)) {
+                    value = rowList.get(column + 1); // 获取下一列的值
+                    break; // 找到匹配项后退出循环
+                }
+            }
+        }
+
+        // 返回匹配项的值，如果没有匹配项，则返回null
+        return value;
+    }
 }
