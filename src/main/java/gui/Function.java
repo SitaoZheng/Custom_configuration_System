@@ -1,5 +1,7 @@
 package gui;
 
+import lang.LanguageManager;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -7,7 +9,8 @@ import java.awt.*;
 
 public class Function extends JFrame {
     public Function() {
-        setTitle("Client System    -by Sitao Zheng & Yiming Yang & Jiapeng Wu");
+        LanguageManager lang = new LanguageManager();
+        setTitle(lang.getLang("Client_System") + "    -by Sitao Zheng");
         setSize(960, 540);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
@@ -25,25 +28,15 @@ public class Function extends JFrame {
 
         // 创建选项卡面板
         JTabbedPane tabbedPane = new JTabbedPane();
-        JLabel function1_tab = new JLabel("Input item name, value be filled automatically. Input the export (import) file name in the \"file name\"; You can add comments below.");
-        //1：Fill in the name of the item and automatically fill in the value according to the data in the database
-        //2：Enter the filename of the export (import) in the "filename" field. Comments can be made below the total
-        function1_tab.setFont(font_1);
-        function1_tab.setForeground(new Color(Integer.parseInt("#800000".substring(1), 16)));
-        tabbedPane.addTab("Function 1", function1_tab);
+        JLabel function1_tab = new JLabel();
+        tabbedPane.addTab(lang.getLang("Function_1"), function1_tab);
 
-        JLabel function2_tab = new JLabel("Data add/Delete, first line is required; for modification, contents in matching data are updated based on values in second row.");
-        //1：Adding (removing) data requires only the first line.
-        //2:Modification Based on the contents of the first row, the contents in the matching database are modified to the contents of the second row
-        function2_tab.setFont(font_1);
-        function2_tab.setForeground(new Color(Integer.parseInt("#800000".substring(1), 16)));
-        tabbedPane.addTab("Function 2", function2_tab);
+        JLabel function2_tab = new JLabel();
+        tabbedPane.addTab(lang.getLang("Function_2"), function2_tab);
 
-        JLabel function3_tab = new JLabel("Select the query type and search for all relevant data based on the keywords you entered.");
-        function3_tab.setFont(font_1);
-        function3_tab.setForeground(new Color(Integer.parseInt("#800000".substring(1), 16)));
-        tabbedPane.addTab("Function 3", function3_tab);
-        tabbedPane.setBounds(0, 0, getWidth(), 55);
+        JLabel function3_tab = new JLabel();
+        tabbedPane.addTab(lang.getLang("Function_3"), function3_tab);
+        tabbedPane.setBounds(0, 0, getWidth(), 20);
         add(tabbedPane);
 
         // 创建 Function-1 的面板
