@@ -60,7 +60,7 @@ public class Maingui extends JFrame {
         message_1.setBounds(10, 355, 150, 15);
         message_1.setFont(font_2);
         message_1.setForeground(Color.BLACK);
-        JLabel message_2 = new JLabel(lang.getLang("Authors") + ": " + "Sitao Zheng");
+        JLabel message_2 = new JLabel(lang.getLang("Authors") + ": " + "Sitao Zheng " + "&" + " Yiming Yang");
         message_2.setBounds(10, 370, 300, 15);
         message_2.setFont(font_2);
         message_2.setForeground(Color.BLACK);
@@ -70,6 +70,8 @@ public class Maingui extends JFrame {
         Launch_button.setBounds((width / 2) - 75, (height / 2) - 80, 150, 50);
         Launch_button.setForeground(Color.RED);
         Launch_button.setFont(font_1);
+
+        Launch_button.setFocusPainted(false);
 
         maingui.add(Launch_button, JLayeredPane.MODAL_LAYER);
         maingui.add(message_1, JLayeredPane.MODAL_LAYER);
