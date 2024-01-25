@@ -10,7 +10,7 @@ import java.awt.*;
 public class Function extends JFrame {
     public Function() {
         LanguageManager lang = new LanguageManager();
-        setTitle(lang.getLang("Client_System") + "    -by Sitao Zheng");
+        setTitle(lang.getLang("Client_System") + "    -by Sitao Zheng & Yiming Yang");
         setSize(960, 540);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
