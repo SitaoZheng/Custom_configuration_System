@@ -31,7 +31,7 @@ public class function2 {
         // 配件输入框
         UIManager.put("ComboBox.selectionBackground", new Color(Integer.parseInt("#4169E1".substring(1), 16)));
         UIManager.put("ComboBox.selectionForeground", Color.WHITE);
-        JComboBox<String> choi_1 = new JComboBox<>(new String[]{"", lang.getLang("CPU"), lang.getLang("MB"), lang.getLang("MAR"), lang.getLang("HDD"), lang.getLang("GPU"), lang.getLang("PSU"), lang.getLang("HSF"), lang.getLang("Case")});
+        JComboBox<String> choi_1 = new JComboBox<>(new String[]{"", lang.getLang("CPU"), lang.getLang("MB"), lang.getLang("RAM"), lang.getLang("HDD"), lang.getLang("GPU"), lang.getLang("PSU"), lang.getLang("HSF"), lang.getLang("Case")});
         choi_1.setBounds(120, 90, 80, 30);
         choi_1.setFont(font_3);
         choi_1.setForeground(new Color(Integer.parseInt("#1E90FF".substring(1), 16)));
