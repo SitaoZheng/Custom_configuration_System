@@ -3,7 +3,7 @@
 ######################################
 # %file_name% -> Represents the file name of Excel, for Example, "example.xlsx", which returns the string "example.xlsx".
 # %column% -> Represents the column in which the cell is currently being edited.
-# %row% -> Represents the column in which the cell is currently being edited.
+# %row% -> Represents the row in which the cell is currently being edited.
 # %input_text% -> Represents a string entered by the user in the input box.
 
 # Version
